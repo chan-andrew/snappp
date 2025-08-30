@@ -1,0 +1,92 @@
+/* Snapchat Score Tracker - Content Script Styles */
+
+#snaptracker-indicator {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px !important;
+    height: 40px !important;
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 20px !important;
+    z-index: 10000 !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+    outline: none !important;
+    user-select: none !important;
+}
+
+#snaptracker-indicator:hover {
+    transform: scale(1.1) !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3) !important;
+}
+
+#snaptracker-indicator.tracking {
+    background: linear-gradient(135deg, #4CAF50, #45a049) !important;
+    animation: pulse 2s infinite !important;
+}
+
+#snaptracker-indicator.inactive {
+    background: linear-gradient(135deg, #f44336, #d32f2f) !important;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Snapchat override styles to prevent conflicts */
+.snaptracker-no-interference {
+    pointer-events: none !important;
+}
+
+/* Notification styles for in-page alerts */
+.snaptracker-notification {
+    position: fixed !important;
+    top: 80px !important;
+    right: 20px !important;
+    background: rgba(0, 0, 0, 0.9) !important;
+    color: white !important;
+    padding: 12px 16px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    z-index: 9999 !important;
+    max-width: 300px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    animation: slideIn 0.3s ease-out !important;
+}
+
+.snaptracker-notification.suspicious {
+    border-left: 4px solid #FF9800 !important;
+}
+
+.snaptracker-notification.normal {
+    border-left: 4px solid #4CAF50 !important;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

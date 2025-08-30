@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            width: 350px;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .section h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .status.active {
+            background: rgba(76, 175, 80, 0.3);
+            border: 1px solid #4CAF50;
+        }
+        
+        .status.inactive {
+            background: rgba(244, 67, 54, 0.3);
+            border: 1px solid #f44336;
+        }
+        
+        .user-list {
+            max-height: 120px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-item:last-child {
+            border-bottom: none;
+        }
+        
+        .user-name {
+            font-weight: 500;
+        }
+        
+        .user-score {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .alert-item {
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        
+        .alert-suspicious {
+            background: rgba(255, 152, 0, 0.3);
+            border-left: 3px solid #FF9800;
+        }
+        
+        .alert-normal {
+            background: rgba(76, 175, 80, 0.3);
+            border-left: 3px solid #4CAF50;
+        }
+        
+        button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            margin: 2px;
+        }
+        
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .primary-btn {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .primary-btn:hover {
+            background: white;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 12px;
+            margin-bottom: 8px;
+            box-sizing: border-box;
+        }
+        
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 12px;
+            text-align: center;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            border-radius: 8px;
+        }
+        
+        .stat-number {
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .loading {
+            text-align: center;
+            opacity: 0.7;
+            font-style: italic;
+        }
+        
+        .emoji {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">📱 Snap Tracker</div>
+        <div class="subtitle">Relationship Transparency Tool</div>
+    </div>
+    
+    <div class="section">
+        <h3><span class="emoji">🔍</span> Tracking Status</h3>
+        <div id="status" class="status inactive">Not Active</div>
+        <button id="toggleTracking" class="primary-btn">Start Tracking</button>
+    </div>
+    
+    <div class="section">
+        <h3><span class="emoji">👥</span> Tracked Users</h3>
+        <div id="userList" class="user-list">
+            <div class="loading">No users added yet</div>
+        </div>
+        <input type="text" id="usernameInput" placeholder="Enter username to track">
+        <button id="addUser">Add User</button>
+        <button id="clearUsers">Clear All</button>
+    </div>
+    
+    <div class="section">
+        <h3><span class="emoji">📊</span> Statistics</h3>
+        <div class="stats">
+            <div class="stat-item">
+                <span id="totalUsers" class="stat-number">0</span>
+                <span>Users</span>
+            </div>
+            <div class="stat-item">
+                <span id="totalAlerts" class="stat-number">0</span>
+                <span>Alerts</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h3><span class="emoji">🚨</span> Recent Alerts</h3>
+        <div id="alertList" style="max-height: 100px; overflow-y: auto;">
+            <div class="loading">No alerts yet</div>
+        </div>
+        <button id="clearAlerts">Clear Alerts</button>
+    </div>
+    
+    <script src="js/popup.js"></script>
+</body>
+</html>
